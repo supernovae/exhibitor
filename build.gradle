@@ -6,6 +6,8 @@ plugins {
 ext.githubProjectName = rootProject.name // Change if github project name is not the same as the root project's name
 
 subprojects {
+    tasks.withType(Javadoc).all { enabled = false }
+
     apply plugin: 'nebula.netflixoss'
     apply plugin: 'java'
 
