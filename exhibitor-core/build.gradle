@@ -27,6 +27,10 @@ dependencies {
     compile "com.sun.jersey:jersey-server:${jerseyVersion}"
     compile "com.sun.jersey:jersey-json:${jerseyVersion}"
 
+    // Consul shared config support
+    compile "com.orbitz.consul:consul-client:${consulVersion}"
+
     testCompile "org.apache.curator:curator-test:${curatorVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testCompile "com.pszymczyk.consul:embedded-consul:${embeddedConsulVersion}"
 }
