@@ -22,7 +22,7 @@ node {
 
         stage('Build and Unit Test') {
             echo "Building with gradle"
-            sh "{Globals.dockerRunMavenClean} ./gradlew -Prelease.version=${EXHIBITOR_VERSION} install"
+            sh "{Globals.dockerRunMavenClean} ./gradlew -Prelease.version=1.5.6 install"
             sh "cd exhibitor-standalone/src/main/resources/buildscripts/standalone/gradle/"
             sh "{Globals.dockerRunMavenClean} ../../../../../../../gradlew shadowJar"
         }
