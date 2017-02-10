@@ -2,13 +2,14 @@
 properties([[$class: 'jenkins.model.BuildDiscarderProperty',
             strategy: [$class: 'LogRotator',
                         numToKeepStr: '5']]])
+
 class Globals {
 
     static String dockerRunMavenClean =
             "docker run --rm -i " +
                     "-v `pwd`:/workdir -w /workdir " +
                     "-v /var/run/docker.sock:/var/run/docker.sock " +
-                    "dl2.homeawaycorp.com/ha-docker/minijava"
+                    "dl2.homeawaycorp.com/ha-docker/minijava "
 }
 
 
@@ -21,11 +22,9 @@ node {
 
         stage('Build and Unit Test') {
             echo "Building with gradle"
-            sh """
-                {Globals.dockerRunMavenClean} ./gradlew -Prelease.version=${EXHIBITOR_VERSION} install && \
-                cd exhibitor-standalone/src/main/resources/buildscripts/standalone/gradle/ && \
-                {Globals.dockerRunMavenClean} ../../../../../../../gradlew shadowJar
-            """
+            sh "{Globals.dockerRunMavenClean} ./gradlew -Prelease.version=${EXHIBITOR_VERSION} install"
+            sh "cd exhibitor-standalone/src/main/resources/buildscripts/standalone/gradle/"
+            sh "{Globals.dockerRunMavenClean} ../../../../../../../gradlew shadowJar"
         }
 
         stage('Publish to artifactory') {
