@@ -28,7 +28,7 @@ node {
         }
 
         stage('Publish to artifactory') {
-            def server = Artifactory.server 'my-server-id'
+            def server = Artifactory.server 'Artifactory_Sungard'
             def uploadSpec = """{
               "files": [
                 {
