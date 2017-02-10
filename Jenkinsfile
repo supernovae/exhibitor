@@ -23,9 +23,7 @@ node {
         stage('Build and Unit Test') {
             echo "Building with gradle"
             sh "${Globals.dockerRunMavenClean} ./gradlew -Prelease.version=1.5.6 install"
-            sh "echo `pwd`"
-            sh "${Globals.dockerRunMavenClean} cd exhibitor-standalone/src/main/resources/buildscripts/standalone/gradle/ && \
-                 ./../../../../../../../gradlew shadowJar"
+
         }
 
         stage('Publish to artifactory') {
