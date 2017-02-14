@@ -5,7 +5,7 @@ properties([[$class: 'jenkins.model.BuildDiscarderProperty',
 
 class Globals {
 
-    static String dockerRunMavenClean =
+    static String dockerRunJavaContainer =
             "docker run --rm -i " +
                     "-v `pwd`:/workdir -w /workdir " +
                     "-v /var/run/docker.sock:/var/run/docker.sock " +
@@ -20,13 +20,20 @@ node {
             checkout scm
         }
 
-        stage('Build and Unit Test') {
+        stage('Build') {
             echo "Building with gradle"
-            sh "${Globals.dockerRunMavenClean} ./gradlew -Prelease.version=1.5.6 install"
+            sh "${Globals.dockerRunJavaContainer} ./gradlew -Prelease.version=1.5.6 install"
 
         }
 
-        stage('Publish to artifactory') {
+        stage('ShadowJar') {
+            echo "Building with gradle"
+            sh "${Globals.dockerRunJavaContainer} cd exhibitor-standalone/src/main/resources/buildscripts/standalone/gradle/ && \
+            ../../../../../../../gradlew shadowJar"
+
+         }
+
+        stage('Publish to Artifactory') {
             def server = Artifactory.server 'Artifactory_Sungard'
             def uploadSpec = """{
               "files": [
